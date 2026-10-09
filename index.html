@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fiumeballed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        /* =========新增：开启全局平滑滚动========= */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* =========【全局页面背景设置】========= */
+        body {
+            /* 替换为你的背景图片文件名 */
+            background-image: url("网页背景图.png");
+            background-repeat: no-repeat;       /* 禁止图片重复平铺 */
+            background-size: 100% auto;        /* 宽度100%铺满网页，高度保持原图比例 */
+            background-attachment: fixed;      /* ✨核心：背景固定在视口，滚动页面文字，背景不动，不会滑出去 */
+            background-position: center top;   /* 图片对齐顶部居中 */
+        }
+        /* 固定导航栏 */
+        header.navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(20,20,35,0.92);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            padding: 0 48px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* ==========【logo外层容器：图标+文字放这里】========== */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* 图标和文字之间的距离，可以改数字 */
+        }
+        /* 【乐队圆形图标样式，方形图片自动裁成圆形】 */
+        .band-icon {
+            width: 38px;  /* 图标大小，按需调 */
+            height: 38px;
+            object-fit: cover; /* 图片不变形，铺满圆形 */
+            border-radius: 50%; /* 正方形 → 圆形核心 */
+            border: 2px solid #fff; 
+        }
+        .logo {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-links a {
+            color: #e8e8ff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #73b8ff;
+        }
+        /* 给页面顶部留出导航高度，不然内容被导航盖住 */
+        main {
+            margin-top: 64px;
+        }
+        /* 各个内容区块，加一点高度方便预览滚动效果 */
+        section {
+            min-height: 85vh;
+            padding: 40px 48px;
+        }
+        /*#home { background-color: #141622; color:white; }
+        #project { background-color: #191b2c; color:white; }
+        #voicebank { background-color: #1c1e33; color:white; }
+        #news { background-color: #202238; color:white; }
+        #about { background-color: #242640; color:white; }*/
+        /* ==========【首页印象横幅图片样式】========== */
+        .home‑banner {
+            width: 80%;        /* 横向占整个界面60% */
+            display: block;    /* 让margin:auto生效实现水平居中 */
+            margin: 0 auto 32px auto; /* 上下：0，左右自动居中，图片底部距离文字32px */
+            height: auto;      /* 高度自动！保证原图长宽比，图片不会拉伸变形 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="navbar">
+        <div class="logo-wrap">
+            <!-- src改成你的乐队图片文件名！图片放在和index.html同一个文件夹 -->
+            <img class="band-icon" src="Fiume Balled正图.png" alt="乐队图标">
+            <div class="logo">Fiume Balled</div>
+        </div>
+        <nav class="nav-links">
+            <a href=" ">首页</a >
+            <a href="#project">工程文件</a >
+            <a href="#voicebank">声库下载</a >
+            <a href="#news">最新消息</a >
+            <a href="#about">关于成员</a >
+        </nav>
+    </header>
+
+    <main>
+        <!-- 各个锚点区块，id 和 href #xxx 一一对应！ -->
+        <section id="home">
+            <!-- ==========【放在首页文字前面的印象横幅图片】========== -->
+            <img class="home‑banner" src="乐队印象图.png" alt="乐队印象横幅">
+            <h2>首页</h2>
+            <p>首页内容写在这里……</p >
+        </section>
+        <section id="project">
+            <h2>工程文件</h2>
+            <p>工程文件内容写在这里……</p >
+        </section>
+        <section id="voicebank">
+            <h2>声库下载</h2>
+            <p>声库下载内容写在这里……</p >
+        </section>
+        <section id="news">
+            <h2>最新消息</h2>
+            <p>最新消息内容写在这里……</p >
+        </section>
+        <section id="about">
+            <h2>关于成员</h2>
+            <p>关于成员内容写在这里……</p >
+        </section>
+    </main>
+</body>
+</html>
