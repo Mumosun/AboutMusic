@@ -1,0 +1,523 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fiumeballed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        /* =========新增：开启全局平滑滚动========= */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* =========【全局页面背景设置】========= */
+        body {
+            /* 替换为你的背景图片文件名 */
+            background-image: url("网页背景图.png");
+            background-repeat: no-repeat;       /* 禁止图片重复平铺 */
+            background-size: 100% auto;        /* 宽度100%铺满网页，高度保持原图比例 */
+            background-position: center top;   /* 图片对齐顶部居中 */
+            min-height: 100vh;
+            background-color: #525252;
+        }
+        /* 固定导航栏 */
+        header.navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(20,20,35,0.92);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            padding: 0 48px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* ==========【logo外层容器：图标+文字放这里】========== */
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px; /* 图标和文字之间的距离，可以改数字 */
+        }
+        /* 【乐队圆形图标样式，方形图片自动裁成圆形】 */
+        .band-icon {
+            width: 38px;  /* 图标大小，按需调 */
+            height: 38px;
+            object-fit: cover; /* 图片不变形，铺满圆形 */
+            border-radius: 50%; /* 正方形 → 圆形核心 */
+            border: 2px solid #fff; 
+        }
+        .logo {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-links a {
+            color: #e8e8ff;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #73b8ff;
+        }
+        /* 给页面顶部留出导航高度，不然内容被导航盖住 */
+        main {
+            margin-top: 64px;
+        }
+        /* 各个内容区块，加一点高度方便预览滚动效果 */
+        section {
+            min-height: 85vh;
+            padding: 40px 48px;
+            scroll-margin-top: 64px;
+        }
+        /* --------区块标题（中文+英文副标题）-------- */
+        .section-title-wrap {
+            text-align: center;
+            margin-bottom: 24px; /*标题和方框之间的空隙*/
+        }
+        
+        .section-title-cn {
+            color:#ffffff;
+            font-size:48px;
+            font-weight:600;
+            margin-bottom:8px;
+        }
+        .section-title-en {
+            color:#dddddd;
+            font-size:32px;
+            letter-spacing:2px;
+        }
+        /* --------半透明圆角方框核心样式-------- */
+        .content-box {
+            width:80%;
+            margin:0 auto; /*整体居中*/
+            background-color:rgba(210,210,210,0.5); /*浅灰，透明度50%*/
+            border-radius:24px; /*四角半圆圆角*/
+            padding:32px; /*方框内部留白，文字不要贴边框*/
+        }
+        /* ========= 项目列表通用样式 ========= */
+        .project-list {
+            list-style: none;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: flex-start; /* 顶部对齐 */
+            margin-bottom: 24px; /* 项目之间的间距 */
+        }
+
+        .project-image {
+            width: 33%; /* 图片宽度占方框的1/3 */
+            margin-right: 2%; /* 图片和文字之间的间距 */
+            object-fit: cover; /* 保持图片比例 */
+        }
+
+        .project-description {
+            width: 65%; /* 文字宽度占方框的约2/3 */
+            color: #ffffff; /* 文字颜色为白色 */
+            line-height: 1.6; /* 行高，提高可读性 */
+        }
+
+        /* ========= 工程文件 - 图片有白色描边 ========= */
+        #project .project-image {
+            border: 4px solid #ffffff;
+        }
+         /* 下载按钮基础样式 16:9 */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25%; /* 按钮宽度为灰框的1/4 */
+            aspect-ratio: 4 / 1; /* 4:1 比例 */
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-top: 16px;
+            transition: opacity 0.2s ease;
+        }
+        .download-btn:hover {
+            opacity: 0.8;
+        }
+        /* 关于成员 - 图片1/4宽度 + 正圆形 */
+        #about .project-item {
+            align-items: center;
+        }
+        #about .project-image {
+            width: 25%;
+            border-radius: 50%;
+            border: none;
+            margin-right: 3%;
+        }
+        #about .project-description {
+            width: 72%;
+        }
+        /* ========== 修改：成员文字样式 ========== */
+        .member-name {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .member-bio {
+            font-size: 28px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+            /* 实现第二行和首行文字对齐 */
+            padding-left: 185px;
+            text-indent: -185px;
+        }
+        .member-bio2 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+            /* 实现第二行和首行文字对齐 */
+            padding-left: 100px;
+            text-indent: -100px;
+        }
+        .bio-label{
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .member-link {
+            color: #a7c4ef;
+            text-decoration: none;
+            font-size: 32px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .member-link:hover {
+            text-decoration: underline;
+        }
+
+        /* =========首页轮播容器========= */
+        .carousel-wrap {
+            width: 80%;
+            margin:0 auto 32px auto;
+            overflow:hidden;
+            position:relative;
+        }
+        .carousel-track {
+            display:flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-track img {
+            width:100%;
+            flex-shrink:0;
+            height:auto;
+        }
+
+        /* 底部方块指示器 */
+        .carousel-dots {
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            margin-top:14px;
+        }
+        .dot {
+            width:14px;
+            height:14px;
+            background:#888888;
+            cursor:pointer;
+        }
+        .dot.active {
+            background:#333333;
+            border: 2px solid #e8e8e8;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航栏 -->
+    <header class="navbar">
+        <div class="logo-wrap">
+            <!-- src改成你的乐队图片文件名！图片放在和index.html同一个文件夹 -->
+            <img class="band-icon" src="Fiume Balled正图.png" alt="乐队图标">
+            <div class="logo">Fiume Balled</div>
+        </div>
+        <nav class="nav-links">
+            <a href=" ">首页</a >
+            <a href="#project">工程文件</a >
+            <a href="#voicebank">声库下载</a >
+            <a href="#news">最新消息</a >
+            <a href="#about">关于成员</a >
+        </nav>
+    </header>
+
+    <main>
+        <!-- 各个锚点区块，id 和 href #xxx 一一对应！ -->
+        <section id="home">
+            <!--轮播组件-->
+            <div class="carousel-wrap">
+                <div class="carousel-track" id="track"></div>
+                <div class="carousel-dots" id="dotsBox"></div>
+            </div>
+            
+        </section>
+        <section id="project">
+            <div class="section-title-wrap">
+                <div class="section-title-cn">工程文件</div>
+                <div class="section-title-en">PROJECT FILES</div>
+            </div>
+            <div class="content-box">
+                <ul class="project-list">
+                    <!-- 工程1 - 按钮颜色1 -->
+                    <li class="project-item">
+                        <img src="DNA封面.jpg" alt="项目图片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">SONG: 【中文填词】D/N/A</div>
+                            <div class="member-bio2">
+                                <span class="bio-label">AUTHOR: </span>眠星L[企划]<br>
+                                调教：眠星L，芳彼芮泽安<br>
+                                封面与MMD：眠月泉阿潘<br>
+                                Vocal：洛天依，乐正绫，言和，墨清弦
+                            </div>
+                            <a href="你的下载链接地址" class="download-btn" style="background-color: #606060;" target="_blank">DOWNLOAD</a>
+                        </div>
+                    </li>
+                    <!-- 工程2 - 按钮颜色2 -->
+                    <!--<li class="project-item">
+                        <img src="your_project_image_2.png" alt="项目图片" class="project-image">
+                        <div class="project-description">
+                            这里是第二个工程文件的详细介绍文字。
+                            <br>
+                            <a href="你的下载链接地址" class="download-btn" style="background-color: #808080;" target="_blank">DOWNLOAD</a>
+                        </div>
+                    </li>-->
+                </ul>
+            </div>
+        </section>
+
+        <section id="voicebank">
+            <div class="section-title-wrap">
+                <div class="section-title-cn">声库下载</div>
+                <div class="section-title-en">VOICEBANK DOWNLOAD</div>
+            </div>
+            <div class="content-box">
+                <ul class="project-list">
+                    <!-- 声库1 - 按钮颜色1 -->
+                    <li class="project-item">
+                        <img src="阮日晖-小窗.png" alt="声库图片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 阮日晖CVVC_ZH</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 中文CVVC三音阶男声<br>
+                                阮日晖中文声库，版本1.0，适用于utau以及Openutau。
+                                传统CVVC声库，包含三个音阶，形象成熟但因为其年龄只有三岁所以音色为少年音。
+                                【代表色：橙色】【擅长乐器：节奏贝斯】
+                            </div>
+                            <a href="https://github.com/Mumosun/AboutMusic/releases/download/RuanRihui/RuanRihui_utau_v1.zip" class="download-btn" style="background-color: #FFD391;" target="_blank">DOWNLOAD</a>
+                        </div>
+                    </li>
+                    <!-- 声库2 - 按钮颜色2 -->
+                    <li class="project-item">
+                        <img src="阮月胧-小窗.png" alt="声库图片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 阮月胧CVVC_ZH</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 中文CVVC三音阶女声<br>
+                                阮月胧中文声库，版本1.0，适用于utau以及Openutau。
+                                传统CVVC声库，包含三个音阶，形象成熟但因为其年龄只有三岁所以音色为少女音。
+                                【代表色：紫色】【擅长乐器：节奏吉他】
+                            </div>
+                            <a href="https://github.com/Mumosun/AboutMusic/releases/download/RuanYuelong/RuanYuelong_utau_v1.zip" class="download-btn" style="background-color: #CF90FE;" target="_blank">DOWNLOAD</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="news">
+            <div class="section-title-wrap">
+                <div class="section-title-cn">最新消息</div>
+                <div class="section-title-en">LATEST NEWS</div>
+            </div>
+            <div class="content-box">
+                <div class="member-name">全新声库-青岚正在制作中......</div>
+                <div class="member-name">全新声库-落羽正在制作中......</div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="section-title-wrap">
+                <div class="section-title-cn">关于成员</div>
+                <div class="section-title-en">ABOUT MEMBERS</div>
+            </div>
+            <div class="content-box">
+                <ul class="project-list">
+                    <!-- 成员1 -->
+                    <li class="project-item">
+                        <img src="慕陌隼.jpg" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 慕陌隼</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个破负责技术的主力<br>
+                                英文名Sunmo，是个能工智人，有事情找他就对了。
+                                是虚拟歌手【阮日晖】的CV，同时爱玩cosplay，cn桑陌欢迎扩列!
+                            </div>
+                            <a href="https://space.bilibili.com/148489574?spm_id_from=333.337.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                    <!-- 成员2 -->
+                    <li class="project-item">
+                        <img src="眠月泉阿潘2.png" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 眠月泉阿潘</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个画到头秃的画师<br>
+                                别名Panmoter，喜欢熊猫，人特别内向，负责所有美术设计，因此经常失眠与失联。<br>
+                                所有歌手的立绘、封面、宣传图等等都出自她手。
+                            </div>
+                            <a href="https://space.bilibili.com/233986638?spm_id_from=333.1007.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                    <!-- 成员3 -->
+                    <li class="project-item">
+                        <img src="眠星L.png" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 眠星L</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个破写歌的甩手掌柜<br>
+                                也可以叫眠星Leven，声音温柔的抽象哥，乐手兼编曲实力派，打游戏也打的不错。<br>
+                                是虚拟歌手【青岚】的CV。
+                            </div>
+                            <a href="https://space.bilibili.com/1227303137?spm_id_from=333.337.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                    <!-- 成员4 -->
+                    <li class="project-item">
+                        <img src="殷酥er.png" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 殷酥er</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个爱产同人的陪伴者<br>
+                                真人开朗，混圈挺多，热爱抽象与制作同人，更热爱唱歌。<br>
+                                是虚拟歌手【落羽】的CV。
+                            </div>
+                            <a href="https://space.bilibili.com/1658568008?spm_id_from=333.337.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                    <!-- 成员5 -->
+                    <li class="project-item">
+                        <img src="芳彼芮泽安.png" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 芳彼芮泽安</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个混迹在KTV的主唱<br>
+                                洋气一点可以叫她Harsonist，腹黑选手，可能会因为唱术曲而发出鬼叫声，但，确实是主唱。<br>
+                                是虚拟歌手【阮月胧】的CV。
+                            </div>
+                            <a href="https://space.bilibili.com/401558865?spm_id_from=333.337.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                    <!-- 成员6 -->
+                    <li class="project-item">
+                        <img src="茗与葵.jpg" alt="成员照片" class="project-image">
+                        <div class="project-description">
+                            <div class="member-name">NAME: 茗与葵c</div>
+                            <div class="member-bio">
+                                <span class="bio-label">INTRODUCE:</span> 一个啥事不干的游戏入<br>
+                                随和到风浪再大依旧稳如老狗，典型不吃压力大心脏，沉迷于n多种游戏，是个游戏入。<br>
+                                是虚拟歌手【？？？】的CV。
+                            </div>
+                            <a href="https://space.bilibili.com/3493269516323344?spm_id_from=333.337.0.0" class="member-link" target="_blank">→点我进入B站主页</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+<script>
+    // ====================【在这里增删图片！只改这个数组！】====================
+const imgList = [
+    "乐队印象图.png",
+    "声库印象图.png"
+    //想要再加图，复制一行写逗号，例如： "印象图3.png",
+];
+const trackDom = document.getElementById("track");
+const dotsBox = document.getElementById("dotsBox");
+let currentIndex = 0;
+
+// 渲染图片
+imgList.forEach(src=>{
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt="轮播图";
+    trackDom.appendChild(img);
+})
+// 渲染方块指示器，几张图自动生成几个方块
+imgList.forEach((_,i)=>{
+    const dot = document.createElement('div');
+    dot.className = "dot"+(i===0?" active":"");
+    dot.onclick=()=>goSlide(i);
+    dotsBox.appendChild(dot);
+})
+// 切换到指定第几张
+function goSlide(idx){
+    currentIndex = idx;
+    trackDom.style.transform = `translateX(${-100 * currentIndex}%)`;
+    //更新方块高亮
+    document.querySelectorAll('.dot').forEach((d,i)=>{
+        d.classList.toggle('active', i===currentIndex);
+    })
+}
+//自动左滑轮播
+function autoPlay(){
+    let next = currentIndex+1;
+    if(next >= imgList.length) next = 0;
+    goSlide(next);
+}
+//每4秒自动切换一张
+setInterval(autoPlay,5000);
+
+// ========== 背景图高度自适应页面内容【核心功能】 ==========
+function adjustBackgroundHeight() {
+    // 获取页面内容的总高度
+    const pageHeight = Math.max(
+        document
+.body.scrollHeight,
+        document
+.body.offsetHeight,
+        document
+.documentElement.clientHeight,
+        document
+.documentElement.scrollHeight,
+        document
+.documentElement.
+offsetHeight
+    );
+
+    // 获取窗口高度
+    const windowHeight = window.innerHeight;
+
+    // 计算背景图需要的最小高度，取页面高度和窗口高度的较大值
+    const minBgHeight = Math.max(pageHeight, windowHeight);
+
+    // 应用计算出的最小高度
+    document
+.body.style.minHeight = `${minBgHeight}px`;
+}
+
+// 页面加载完成后执行
+window
+.addEventListener('load', adjustBackgroundHeight);
+
+// 窗口大小改变时重新计算
+window
+.addEventListener('resize', adjustBackgroundHeight);
+</script>
+</body>
+</html>
