@@ -38,8 +38,8 @@
             background: rgba(20,20,35,0.92);
             backdrop-filter: blur(6px);
             z-index: 999;
-            padding: 0 144px;
-            height: 192px;
+            padding: 0 48px;
+            height: 84px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -48,30 +48,30 @@
         .logo-wrap {
             display: flex;
             align-items: center;
-            gap: 36px; /* 图标和文字之间的距离，可以改数字 */
+            gap: 12px; /* 图标和文字之间的距离，可以改数字 */
         }
         /* 【乐队圆形图标样式，方形图片自动裁成圆形】 */
         .band-icon {
-            width: 114px;  /* 图标大小，按需调 */
-            height: 114px;
+            width: 38px;  /* 图标大小，按需调 */
+            height: 38px;
             object-fit: cover; /* 图片不变形，铺满圆形 */
             border-radius: 50%; /* 正方形 → 圆形核心 */
             border: 6px solid #fff; 
         }
         .logo {
             color: #ffffff;
-            font-size: 66px;
+            font-size: 22px;
             font-weight: 600;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
         }
         .nav-links {
             display: flex;
-            gap: 96px;
+            gap: 32px;
         }
         .nav-links a {
             color: #e8e8ff;
             text-decoration: none;
-            font-size: 45px;
+            font-size: 15px;
             transition: color 0.2s;
         }
         .nav-links a:hover {
@@ -79,7 +79,7 @@
         }
         /* 给页面顶部留出导航高度，不然内容被导航盖住 */
         main {
-            margin-top: 192px;
+            margin-top: 84px;
         }
         /* 各个内容区块，加一点高度方便预览滚动效果 */
         section {
@@ -95,22 +95,22 @@
         
         .section-title-cn {
             color:#ffffff;
-            font-size:144px;
+            font-size:48px;
             font-weight:600;
-            margin-bottom:24px;
+            margin-bottom:8px;
         }
         .section-title-en {
             color:#dddddd;
-            font-size:96px;
-            letter-spacing:6px;
+            font-size:32px;
+            letter-spacing:2px;
         }
         /* --------半透明圆角方框核心样式-------- */
         .content-box {
             width:80%;
             margin:0 auto; /*整体居中*/
             background-color:rgba(210,210,210,0.5); /*浅灰，透明度50%*/
-            border-radius:72px; /*四角半圆圆角*/
-            padding:96px; /*方框内部留白，文字不要贴边框*/
+            border-radius:24px; /*四角半圆圆角*/
+            padding:32px; /*方框内部留白，文字不要贴边框*/
         }
         /* ========= 项目列表通用样式 ========= */
         .project-list {
@@ -120,7 +120,7 @@
         .project-item {
             display: flex;
             align-items: flex-start; /* 顶部对齐 */
-            margin-bottom: 72px; /* 项目之间的间距 */
+            margin-bottom: 24px; /* 项目之间的间距 */
         }
 
         .project-image {
@@ -137,7 +137,7 @@
 
         /* ========= 工程文件 - 图片有白色描边 ========= */
         #project .project-image {
-            border: 12px solid #ffffff;
+            border: 4px solid #ffffff;
         }
          /* 下载按钮基础样式 4:1 */
         .download-btn {
@@ -148,10 +148,10 @@
             aspect-ratio: 4 / 1; /* 4:1 比例 */
             color: #ffffff;
             text-decoration: none;
-            font-size: 72px;
+            font-size: 24px;
             font-weight: 600;
-            letter-spacing: 6px;
-            margin-top: 48px;
+            letter-spacing: 2px;
+            margin-top: 16px;
             transition: opacity 0.2s ease;
         }
         .download-btn:hover {
@@ -164,7 +164,7 @@
         #about .project-image {
             width: 25%;
             border-radius: 50%;
-            border: 12px solid #525252;
+            border: 4px solid #525252;
             margin-right: 3%;
         }
         #about .project-description {
@@ -172,12 +172,12 @@
         }
         /* ========== 修改：成员文字样式 ========== */
         .member-name {
-            font-size: 96px;
+            font-size: 48px;
             font-weight: bold;
             margin-bottom: 24px;
         }
         .member-bio {
-            font-size: 84px;
+            font-size: 28px;
             margin-bottom: 24px;
             line-height: 1.4;
             /* 实现第二行和首行文字对齐 */
@@ -185,7 +185,7 @@
             text-indent: -185px;
         }
         .member-bio2 {
-            font-size: 84px;
+            font-size: 28px;
             margin-bottom: 24px;
             line-height: 1.4;
             /* 实现第二行和首行文字对齐 */
@@ -193,13 +193,13 @@
             text-indent: -100px;
         }
         .bio-label{
-            font-size: 84px;
+            font-size: 28px;
             font-weight: bold;
         }
         .member-link {
             color: #a7c4ef;
             text-decoration: none;
-            font-size: 96px;
+            font-size: 32px;
             font-weight: bold;
             display: inline-block;
         }
@@ -210,7 +210,7 @@
         /* =========首页轮播容器========= */
         .carousel-wrap {
             width: 80%;
-            margin:0 auto 96px auto;
+            margin:0 auto 32px auto;
             overflow:hidden;
             position:relative;
         }
@@ -227,19 +227,19 @@
         /* 底部方块指示器 */
         .carousel-dots {
             display:flex;
-            gap:30px;
+            gap:10px;
             justify-content:center;
-            margin-top:42px;
+            margin-top:14px;
         }
         .dot {
-            width:42px;
-            height:42px;
+            width:14px;
+            height:14px;
             background:#888888;
             cursor:pointer;
         }
         .dot.active {
             background:#333333;
-            border: 6px solid #e8e8e8;
+            border: 2px solid #e8e8e8;
         }
         /* ===================== 【重写手机端全部】 max‑width:768px ===================== */
         @media (max-width: 768px) {
